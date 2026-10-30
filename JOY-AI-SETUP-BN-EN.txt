@@ -1,0 +1,46 @@
+# Joy TR TX — JOY AI setup (Free tier)
+
+This package contains:
+- `index.html` — the shop website with a bilingual AI chat interface.
+- `worker.js` — a secure Cloudflare Worker proxy that calls Google Gemini. The API key stays on the server, not in the website.
+
+## Important
+The AI chat will **not** generate answers until you complete the one-time setup below. Do not paste your API key into `index.html`, GitHub files, or a public chat. The Gemini free tier has model-specific quotas and can change; if the free quota is reached, the AI may temporarily stop replying. Review Google's current terms and privacy details before using it with real customers.
+
+## Step 1 — Get a Gemini API key
+1. Open https://aistudio.google.com/app/apikey
+2. Sign in and create an API key for a project on the Free tier.
+3. Copy it privately. Never share it in a screenshot or message.
+
+## Step 2 — Deploy the backend for free on Cloudflare Workers
+1. Create/sign in to a Cloudflare account: https://dash.cloudflare.com/
+2. Open **Workers & Pages** → **Create** → **Worker**.
+3. Give it a name such as `joy-tr-tx-ai` and deploy the starter Worker.
+4. Open the Worker → **Edit code**. Replace the code with all the contents of `worker.js`, then Save and Deploy.
+5. Open the Worker **Settings** → **Variables and Secrets** (or **Secrets**).
+6. Add a secret named `GEMINI_API_KEY`; paste your Gemini key as its value and save. Do not use a plain text variable for the key.
+7. Copy the Worker URL, for example `https://joy-tr-tx-ai.YOUR-SUBDOMAIN.workers.dev`.
+
+## Step 3 — Connect the website to the Worker
+1. Open `index.html` in a text editor.
+2. Find this line near the bottom:
+   `const JOY_AI_API_URL = 'PASTE_YOUR_CLOUDFLARE_WORKER_URL_HERE/api/chat';`
+3. Replace the placeholder with your actual Worker URL, keeping `/api/chat` at the end. Example:
+   `const JOY_AI_API_URL = 'https://joy-tr-tx-ai.YOUR-SUBDOMAIN.workers.dev/api/chat';`
+4. Save `index.html` and upload it to your GitHub repository as `index.html` (replace the old one).
+
+## Step 4 — Test
+Open your live website, open **Joy AI**, and ask:
+- `একটা টি-শার্টের দাম কত?`
+- `Suggest an affordable product`
+- `Ami ekta watch nite chai`
+
+## Optional security hardening
+In `worker.js`, replace `Access-Control-Allow-Origin: '*'` with your exact live website origin, e.g. `https://YOUR-USERNAME.github.io`. Do not include a trailing slash. Save and deploy again.
+
+## Notes
+- Cloudflare Workers has a Free plan with daily request limits. Google Gemini Free tier has its own rate limits. Neither provider promises unlimited free usage.
+- This is a real generative AI connection, not a fixed keyword bot, once the key and Worker are configured.
+- The assistant can answer using the current product catalogue sent by the browser. It directs customers to the site's WhatsApp checkout rather than claiming it has completed an order.
+- The current shop's product manager stores products in each browser only; it is not a shared database.
+- Google AI Studio's free-tier data handling terms apply. Avoid collecting sensitive customer information in AI chat.
