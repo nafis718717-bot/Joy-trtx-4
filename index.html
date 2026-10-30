@@ -37,6 +37,22 @@ nav{display:flex;gap:16px;flex-wrap:wrap}nav a{text-decoration:none;color:#222;f
 footer{font-family:'Space Grotesk',Arial,sans-serif;background:#050505;color:#171717;text-align:center;padding:32px 15px;margin-top:35px}
 @media(max-width:850px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){header{padding:14px 4%;align-items:flex-start;flex-direction:column}.hero{margin:16px 4%;padding:42px 22px}.section{padding:22px 4%}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card img{height:145px}.info{padding:10px}.form-grid{grid-template-columns:1fr}}
+
+/* Joy AI free bilingual assistant */
+#joyChatToggle{position:fixed;right:18px;bottom:18px;z-index:50;background:#d4af37;color:#080808;border:0;border-radius:999px;padding:13px 18px;font-weight:800;box-shadow:0 6px 24px #0008;cursor:pointer}
+#joyChat{position:fixed;right:16px;bottom:78px;width:min(350px,calc(100vw - 32px));height:450px;max-height:72vh;background:#101010;border:1px solid #8e742d;border-radius:16px;z-index:51;display:none;overflow:hidden;box-shadow:0 12px 40px #000b;font-family:Arial,sans-serif}
+#joyChat.open{display:flex;flex-direction:column}
+.jc-head{padding:12px 14px;background:#171717;border-bottom:1px solid #393020;display:flex;align-items:center;justify-content:space-between}
+.jc-title{font-size:13px;font-weight:800;letter-spacing:.5px;color:#e0bd55}.jc-sub{font-size:10px;color:#aaa;margin-top:3px}
+.jc-close{background:transparent;color:#ddd;border:0;font-size:21px;cursor:pointer}
+#jcMessages{padding:12px;flex:1;overflow:auto;display:flex;flex-direction:column;gap:9px}
+.jc-msg{max-width:88%;padding:9px 11px;border-radius:11px;font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.jc-bot{align-self:flex-start;background:#242424;color:#eee;border-bottom-left-radius:3px}.jc-user{align-self:flex-end;background:#493b1c;color:#f8e7b6;border-bottom-right-radius:3px}
+.jc-inputrow{display:flex;gap:7px;padding:10px;border-top:1px solid #393020;background:#151515}
+#jcInput{min-width:0;flex:1;background:#222;color:#fff;border:1px solid #444;border-radius:8px;padding:10px;font-size:12px;outline:none}
+#jcSend{background:#d4af37;color:#090909;border:0;border-radius:8px;padding:0 13px;font-size:12px;font-weight:bold;cursor:pointer}
+.jc-note{font-size:9px;color:#888;text-align:center;padding:0 8px 7px;background:#151515}
+
 </style>
 </head>
 <body>
@@ -85,6 +101,15 @@ footer{font-family:'Space Grotesk',Arial,sans-serif;background:#050505;color:#17
   </div>
 </section>
 <footer><h2 style="font-family:'Orbitron',sans-serif;font-size:18px;letter-spacing:1.2px">JOY TR TX</h2><p style="margin:8px 0">Premium Shopping Experience</p><p>Contact: 01612376207</p><p style="margin-top:12px">© 2026 Joy TR TX. All Rights Reserved.</p></footer>
+
+<button id="joyChatToggle" type="button" onclick="toggleJoyChat()">✦ Joy AI</button>
+<div id="joyChat" aria-label="Joy TR TX order assistant">
+  <div class="jc-head"><div><div class="jc-title">JOY TR TX · AI ASSISTANT</div><div class="jc-sub">বাংলা · English · Banglish</div></div><button class="jc-close" onclick="toggleJoyChat()" aria-label="Close">×</button></div>
+  <div id="jcMessages"><div class="jc-msg jc-bot">স্বাগতম! আমি Joy TR TX-এর অর্ডার সহকারী। পণ্যের নাম বা দাম জানতে লিখুন, অথবা অর্ডার করতে বলুন।\nWelcome! Ask about a product or type “order”.</div></div>
+  <div class="jc-inputrow"><input id="jcInput" placeholder="মেসেজ লিখুন / Type a message..." onkeydown="if(event.key==='Enter')sendJoyMessage()"><button id="jcSend" onclick="sendJoyMessage()">পাঠান</button></div>
+  <div class="jc-note">ফ্রি সহকারী · স্বয়ংক্রিয় উত্তর · অর্ডার WhatsApp-এ পাঠানো হবে</div>
+</div>
+
 <script>
 const starterProducts = [
 {id:1,name:'Premium T-Shirt',price:650,cat:'Fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'},
@@ -199,6 +224,25 @@ function checkout(){
   message+=`\nTotal: ৳${total}`;
   window.open('https://wa.me/88'+phone+'?text='+encodeURIComponent(message),'_blank','noopener');
 }
+
+// Free bilingual keyword-based assistant (does not require a paid AI API)
+let joyOrderStage=0, joyOrder={product:'',name:'',phone:'',address:''};
+function toggleJoyChat(){document.getElementById('joyChat').classList.toggle('open');if(document.getElementById('joyChat').classList.contains('open'))document.getElementById('jcInput').focus();}
+function joyBubble(text,who='bot'){const box=document.getElementById('jcMessages');const el=document.createElement('div');el.className='jc-msg '+(who==='user'?'jc-user':'jc-bot');el.textContent=text;box.appendChild(el);box.scrollTop=box.scrollHeight;}
+function joyFindProducts(q){const terms=q.toLowerCase().split(/\s+/).filter(w=>w.length>2&&!['price','দাম','কত','টা','the','for','want','need','show','দেখাও','আছে','কিনতে','চাই'].includes(w));let found=products.filter(p=>terms.some(t=>p.name.toLowerCase().includes(t))||q.toLowerCase().includes(p.cat.toLowerCase()));return found.slice(0,5);}
+function joyOrderStart(product=''){joyOrder={product,name:'',phone:'',address:''};joyOrderStage=1;joyBubble('অর্ডার নিতে পারি। আপনার নামটি লিখুন।\nI can help place the order. Please enter your name.');}
+function sendJoyMessage(){const input=document.getElementById('jcInput');const q=input.value.trim();if(!q)return;input.value='';joyBubble(q,'user');const low=q.toLowerCase();
+ if(joyOrderStage===1){joyOrder.name=q;joyOrderStage=2;joyBubble('ধন্যবাদ '+q+'! আপনার মোবাইল নম্বরটি দিন।\nThanks! Please enter your phone number.');return;}
+ if(joyOrderStage===2){const digits=q.replace(/[^0-9+]/g,'');if(digits.replace(/\D/g,'').length<10){joyBubble('সঠিক মোবাইল নম্বর লিখুন। Please enter a valid phone number.');return;}joyOrder.phone=q;joyOrderStage=3;joyBubble('ডেলিভারির সম্পূর্ণ ঠিকানা লিখুন।\nPlease enter your full delivery address.');return;}
+ if(joyOrderStage===3){joyOrder.address=q;joyOrderStage=0;const msg='Hello Joy TR TX! New order request via Joy AI.%0AProduct/Request: '+encodeURIComponent(joyOrder.product||'Please confirm product')+'%0AName: '+encodeURIComponent(joyOrder.name)+'%0APhone: '+encodeURIComponent(joyOrder.phone)+'%0AAddress: '+encodeURIComponent(joyOrder.address);joyBubble('আপনার তথ্য নেওয়া হয়েছে। WhatsApp-এ অর্ডারের অনুরোধ পাঠানোর জন্য খুলছি।\nYour details are ready. Opening WhatsApp to send the order request.');window.open('https://wa.me/88'+ '01612376207' +'?text='+msg,'_blank','noopener');return;}
+ if(/^(hi|hello|hey|হাই|হ্যালো|আসসালামু|salam)/i.test(q)){joyBubble('হ্যালো! কী পণ্য খুঁজছেন? পণ্যের নাম লিখুন, দাম জানতে চান বলুন, অথবা “অর্ডার” লিখুন।\nHello! What product are you looking for?');return;}
+ if(/(order|অর্ডার|kinbo|কিনব|নিবো|nibo|buy|purchase)/i.test(low)){joyOrderStart(q.replace(/(i want to|want to|order|অর্ডার করতে চাই|অর্ডার|কিনতে চাই|kinbo|nibo)/ig,'').trim());return;}
+ const found=joyFindProducts(q);
+ if(found.length){joyBubble('আপনার খোঁজা পণ্য / Matching products:\n'+found.map(p=>'• '+p.name+' — ৳'+Number(p.price).toLocaleString('en-BD')).join('\n')+'\n\nঅর্ডার করতে পণ্যের নামসহ “অর্ডার” লিখুন। To order, type “order” with the product name.');return;}
+ if(/(price|দাম|কত|available|আছে|product|পণ্য|কি কি|what do you sell)/i.test(low)){joyBubble('আমাদের পণ্যগুলো Shop অংশে দেখতে পারেন। নির্দিষ্ট পণ্যের নাম লিখলে দাম খুঁজে দেখাব।\nPlease browse the Shop section or type a product name and I’ll look up its listed price.');return;}
+ joyBubble('আমি পণ্যের নাম/দাম খুঁজে দিতে এবং অর্ডারের তথ্য নিতে পারি। একটু অন্যভাবে লিখুন, অথবা Shop থেকে পণ্যের নাম পাঠান।\nI can look up listed products and collect order details. Please rephrase or send a product name.');
+}
+
 renderProducts();
 </script>
 </body>
