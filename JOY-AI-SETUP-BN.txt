@@ -1,0 +1,13 @@
+JOY TR TX — JOY AI SETUP (Bangla)
+
+1) Cloudflare dashboard-এ তোমার Worker square-bonus-7358 খুলে Edit code চাপো।
+2) পুরোনো কোড সম্পূর্ণ select করে delete করো। এই ZIP-এর worker.js ফাইলের সম্পূর্ণ কোড paste করো।
+3) Save and Deploy চাপো।
+4) Worker-এর Settings > Variables and Secrets > Add > Secret-এ যাও।
+   Name: GEMINI_API_KEY
+   Value: Google AI Studio থেকে নিজের API key paste করো। Save করো। Key কাউকে পাঠাবে না এবং HTML/GitHub-এ রাখবে না।
+5) এই ZIP-এর index.html ফাইলটি তোমার GitHub repository-তে আগের index.html-এর বদলে upload করো। এতে Worker URL আগে থেকেই বসানো আছে।
+6) GitHub Pages update হলে ওয়েবসাইটে Joy AI খুলে পরীক্ষা করো।
+
+Gemini API free tier-এ সীমা থাকে; quota শেষ হলে AI সাময়িকভাবে উত্তর নাও দিতে পারে। Google-এর বর্তমান Free Tier ও terms দেখে নিও।
+এই Worker শুধু https://nafis718717-bot.github.io origin থেকে browser request গ্রহণ করে। GitHub Pages-এর URL আলাদা হলে worker.js-এর ALLOWED_ORIGINS তালিকায় তোমার সঠিক site origin বসাতে হবে।
