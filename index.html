@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#123c85">
+<title>Joy TR TX | Premium Shopping</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#090909;color:#f5f5f5}
+header{background:#111;padding:16px 6%;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:0 2px 12px #0001;position:sticky;top:0;z-index:5}
+.logo{font-family:'Orbitron',sans-serif;font-size:23px;letter-spacing:1.2px;font-weight:900;color:#f5f5f5}.logo span{color:#d4af37}
+nav{display:flex;gap:16px;flex-wrap:wrap}nav a{text-decoration:none;color:#222;font-weight:bold;font-size:14px}
+.hero{margin:25px 6%;padding:65px 35px;border:1px solid #333;border-radius:20px;background:linear-gradient(120deg,#050505,#242424);color:#171717}
+.hero h1{font-family:'Orbitron',sans-serif;letter-spacing:-1px;font-size:clamp(30px,5vw,46px);margin-bottom:14px}.hero p{color:#cfcfcf;margin-bottom:24px}
+.btn{display:inline-block;background:#d4af37;color:#080808;border:0;padding:13px 22px;border-radius:8px;font-weight:bold;cursor:pointer;text-decoration:none}
+.section{padding:28px 6%}.section h2{font-size:27px;margin-bottom:18px}
+.search{width:100%;padding:14px;border:1px solid #383838;background:#171717;color:#fff;border-radius:9px;margin-bottom:18px;font-size:15px}
+.categories{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}
+.categories button{border:1px solid #383838;background:#171717;color:#f5f5f5;padding:10px 16px;border-radius:22px;cursor:pointer}
+.categories button.active{background:#111111;color:#171717;border-color:#111111}
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.card{background:#171717;border-radius:13px;overflow:hidden;box-shadow:0 3px 15px #ffffff0d;transition:.2s}
+.card:hover{transform:translateY(-4px)}.card img{width:100%;height:185px;object-fit:cover;background:#252525}
+.info{padding:13px}.info h3{font-size:15px;margin-bottom:9px;min-height:34px}
+.price{color:#d4af37;font-size:19px;font-weight:bold;margin-bottom:11px}
+.add{width:100%;padding:11px;border:0;background:#111111;color:#171717;border-radius:7px;cursor:pointer}
+.cart,.admin{background:#171717;padding:20px;border-radius:12px;box-shadow:0 3px 15px #00000009}
+.cart-item{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #303030}
+.cart-item button{border:0;background:#171717;color:#c33;cursor:pointer;padding:3px 7px}
+.admin p{color:#b5b5b5;font-size:14px;line-height:1.5;margin-bottom:14px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.form-grid input,.form-grid select{width:100%;padding:12px;border:1px solid #404040;border-radius:8px;background:#171717}
+.form-grid .wide{grid-column:1/-1}
+footer{font-family:'Space Grotesk',Arial,sans-serif;background:#050505;color:#171717;text-align:center;padding:32px 15px;margin-top:35px}
+@media(max-width:850px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){header{padding:14px 4%;align-items:flex-start;flex-direction:column}.hero{margin:16px 4%;padding:42px 22px}.section{padding:22px 4%}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card img{height:145px}.info{padding:10px}.form-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">JOY <span>TR TX</span></div>
+  <nav><a href="#home">Home</a><a href="#shop">Shop</a><a href="#cart">Cart 🛒 <span id="count">0</span></a><a href="#manage">Add Products</a></nav>
+</header>
+<section class="hero" id="home">
+  <h1>Discover Your Style</h1>
+  <p>Premium Products. Amazing Prices. Exceptional Shopping.</p>
+  <a href="#shop" class="btn">SHOP NOW →</a>
+</section>
+<section class="section" id="shop">
+  <h2>Explore Products</h2>
+  <input class="search" id="search" placeholder="Search your favourite products..." oninput="renderProducts()">
+  <div class="categories">
+    <button class="active" onclick="setCategory('All',this)">All</button>
+    <button onclick="setCategory('Fashion',this)">Fashion</button>
+    <button onclick="setCategory('Electronics',this)">Electronics</button>
+    <button onclick="setCategory('Accessories',this)">Accessories</button>
+    <button onclick="setCategory('Lifestyle',this)">Lifestyle</button>
+  </div>
+  <p id="resultCount" style="color:#b5b5b5;margin:-8px 0 16px;font-size:13px"></p>
+  <div class="products" id="products"></div>
+</section>
+<section class="section" id="manage">
+  <h2>Product Manager</h2>
+  <div class="admin">
+    <p>Add as many products as you need on this device. Products you add are saved in this browser using local storage. For a shared online shop and central admin panel, a database/backend is required.</p>
+    <div class="form-grid">
+      <input id="newName" placeholder="Product name">
+      <input id="newPrice" type="number" min="1" placeholder="Price in BDT">
+      <select id="newCategory"><option>Fashion</option><option>Electronics</option><option>Accessories</option><option>Lifestyle</option></select>
+      <input id="newImage" placeholder="Image URL (https://...)">
+      <button class="btn wide" onclick="addNewProduct()">＋ Add Product</button>
+    </div>
+    <p id="adminMessage" style="margin:12px 0 0"></p>
+  </div>
+</section>
+<section class="section" id="cart">
+  <h2>Shopping Cart 🛒</h2>
+  <div class="cart">
+    <div id="cartItems">Your cart is empty.</div>
+    <h3 id="total" style="margin:20px 0">Total: ৳0</h3>
+    <button class="btn" onclick="checkout()">Order on WhatsApp</button>
+  </div>
+</section>
+<footer><h2 style="font-family:'Orbitron',sans-serif;font-size:18px;letter-spacing:1.2px">JOY TR TX</h2><p style="margin:8px 0">Premium Shopping Experience</p><p>Contact: 01612376207</p><p style="margin-top:12px">© 2026 Joy TR TX. All Rights Reserved.</p></footer>
+<script>
+const starterProducts = [
+{id:1,name:'Premium T-Shirt',price:650,cat:'Fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'},
+{id:2,name:'Classic Sneakers',price:1450,cat:'Fashion',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80'},
+{id:3,name:'Wireless Headphones',price:1850,cat:'Electronics',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80'},
+{id:4,name:'Smart Watch',price:2200,cat:'Electronics',img:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80'},
+{id:5,name:'Premium Backpack',price:1100,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
+{id:6,name:'Stylish Sunglasses',price:750,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
+{id:7,name:'Luxury Watch',price:1950,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
+{id:8,name:'Travel Bag',price:1250,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&w=600&q=80'},
+{id:9,name:'Casual Hoodie',price:1250,cat:'Fashion',img:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80'},
+{id:10,name:'Denim Jacket',price:1850,cat:'Fashion',img:'https://images.unsplash.com/photo-1543076447-215ad9ba6923?auto=format&fit=crop&w=600&q=80'},
+{id:11,name:'Running Shoes',price:1750,cat:'Fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'},
+{id:12,name:'Cotton Polo Shirt',price:790,cat:'Fashion',img:'https://images.unsplash.com/photo-1589310243389-96a5483213a8?auto=format&fit=crop&w=600&q=80'},
+{id:13,name:'Classic Sneakers Black',price:1590,cat:'Fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'},
+{id:14,name:'Everyday Trousers',price:990,cat:'Fashion',img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=600&q=80'},
+{id:15,name:'Summer Shirt',price:850,cat:'Fashion',img:'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=600&q=80'},
+{id:16,name:'Bluetooth Speaker',price:1350,cat:'Electronics',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80'},
+{id:17,name:'Gaming Headset',price:2450,cat:'Electronics',img:'https://images.unsplash.com/photo-1599669454699-248893623440?auto=format&fit=crop&w=600&q=80'},
+{id:18,name:'Wireless Earbuds',price:1150,cat:'Electronics',img:'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=600&q=80'},
+{id:19,name:'Digital Camera',price:12500,cat:'Electronics',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80'},
+{id:20,name:'Portable Power Bank',price:950,cat:'Electronics',img:'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=600&q=80'},
+{id:21,name:'Mechanical Keyboard',price:3200,cat:'Electronics',img:'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80'},
+{id:22,name:'Computer Mouse',price:650,cat:'Electronics',img:'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=600&q=80'},
+{id:23,name:'Tablet Stand',price:450,cat:'Electronics',img:'https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?auto=format&fit=crop&w=600&q=80'},
+{id:24,name:'Leather Wallet',price:550,cat:'Accessories',img:'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80'},
+{id:25,name:'Crossbody Bag',price:1150,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
+{id:26,name:'Baseball Cap',price:390,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
+{id:27,name:'Classic Belt',price:490,cat:'Accessories',img:'https://images.unsplash.com/photo-1624222247344-550fb8f3f4c?auto=format&fit=crop&w=600&q=80'},
+{id:28,name:'Minimal Necklace',price:650,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
+{id:29,name:'Travel Pouch',price:350,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
+{id:30,name:'Sports Water Bottle',price:420,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=600&q=80'},
+{id:31,name:'Desk Lamp',price:890,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
+{id:32,name:'Coffee Tumbler',price:590,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
+{id:33,name:'Room Decor',price:750,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
+{id:34,name:'Scented Candle',price:450,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80'},
+{id:35,name:'Yoga Mat',price:850,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80'},
+{id:36,name:'Fitness Bottle',price:380,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=600&q=80'},
+{id:37,name:'Travel Organizer',price:690,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
+{id:38,name:'Premium Cap',price:420,cat:'Fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'},
+{id:39,name:'Smart Home Light',price:1250,cat:'Electronics',img:'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80'},
+{id:40,name:'Laptop Sleeve',price:850,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'}
+];
+let customProducts = [];
+try { customProducts = JSON.parse(localStorage.getItem('joyTrTxProducts') || '[]'); } catch(e) {}
+let products = [...starterProducts, ...customProducts];
+let cart = [];
+let category = 'All';
+
+function setCategory(cat,btn){
+  category=cat;
+  document.querySelectorAll('.categories button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts();
+}
+function renderProducts(){
+  const search=document.getElementById('search').value.toLowerCase().trim();
+  const filtered=products.filter(p=>(category==='All'||p.cat===category)&&p.name.toLowerCase().includes(search));
+  document.getElementById('resultCount').textContent=`Showing ${filtered.length} of ${products.length} products`;
+  document.getElementById('products').innerHTML=filtered.length?filtered.map(p=>`
+    <div class="card">
+      <img src="${escapeAttr(p.img)}" alt="${escapeAttr(p.name)}" loading="lazy" onerror="this.src='https://placehold.co/600x450?text=Joy+TR+TX'">
+      <div class="info"><h3>${escapeHTML(p.name)}</h3><div class="price">৳${Number(p.price).toLocaleString('en-BD')}</div>
+      <button class="add" onclick="addToCart(${Number(p.id)})">Add to Cart</button></div>
+    </div>`).join(''):'<p>No products found.</p>';
+}
+function escapeHTML(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function escapeAttr(value){return escapeHTML(value);}
+function addToCart(id){
+  const product=products.find(p=>p.id===id);if(!product)return;
+  const item=cart.find(p=>p.id===id);
+  if(item)item.qty++;else cart.push({...product,qty:1});
+  updateCart();
+}
+function removeItem(id){cart=cart.filter(p=>p.id!==id);updateCart();}
+function updateCart(){
+  document.getElementById('count').innerText=cart.reduce((s,p)=>s+p.qty,0);
+  document.getElementById('cartItems').innerHTML=cart.length?cart.map(p=>`
+    <div class="cart-item"><span>${escapeHTML(p.name)} × ${p.qty}</span>
+    <span>৳${(p.price*p.qty).toLocaleString('en-BD')} <button onclick="removeItem(${p.id})">Remove</button></span></div>`).join(''):'Your cart is empty.';
+  const total=cart.reduce((s,p)=>s+p.price*p.qty,0);
+  document.getElementById('total').innerText='Total: ৳'+total.toLocaleString('en-BD');
+}
+function addNewProduct(){
+  const name=document.getElementById('newName').value.trim();
+  const price=Number(document.getElementById('newPrice').value);
+  const cat=document.getElementById('newCategory').value;
+  const img=document.getElementById('newImage').value.trim()||'https://placehold.co/600x450?text=Joy+TR+TX';
+  const msg=document.getElementById('adminMessage');
+  if(!name||!Number.isFinite(price)||price<=0){msg.textContent='Enter a product name and a valid price.';return;}
+  if(!/^https:\/\//i.test(img)){msg.textContent='Image URL must start with https://';return;}
+  const id=Date.now()+Math.floor(Math.random()*1000);
+  const product={id,name,price,cat,img};
+  customProducts.push(product);
+  try{localStorage.setItem('joyTrTxProducts',JSON.stringify(customProducts));}
+  catch(e){msg.textContent='Could not save: browser storage may be full.';customProducts.pop();return;}
+  products=[...starterProducts,...customProducts];
+  document.getElementById('newName').value='';
+  document.getElementById('newPrice').value='';
+  document.getElementById('newImage').value='';
+  msg.textContent='Product added successfully!';
+  category='All';
+  document.querySelectorAll('.categories button').forEach(b=>b.classList.toggle('active',b.textContent==='All'));
+  renderProducts();
+}
+function checkout(){
+  if(!cart.length){alert('Your cart is empty!');return;}
+  const phone='01612376207';
+  const total=cart.reduce((s,p)=>s+p.price*p.qty,0);
+  let message='Hello Joy TR TX! I want to order:\n\n';
+  cart.forEach(p=>message+=`${p.name} x ${p.qty} = ৳${p.price*p.qty}\n`);
+  message+=`\nTotal: ৳${total}`;
+  window.open('https://wa.me/88'+phone+'?text='+encodeURIComponent(message),'_blank','noopener');
+}
+renderProducts();
+</script>
+</body>
+</html>
