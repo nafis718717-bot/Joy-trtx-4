@@ -76,7 +76,59 @@ function changeQty(id,n){const x=cart.find(x=>x.id===id);if(!x)return;x.qty+=n;i
 function openCart(){document.getElementById('overlay').classList.add('show');document.getElementById('drawer').classList.add('show')}
 function closeCart(){document.getElementById('overlay').classList.remove('show');document.getElementById('drawer').classList.remove('show')}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2100)}
-function checkout(){if(!cart.length){showToast('Your cart is empty');return}showToast('Checkout needs a connected order backend');}
+function checkout(){
+  if(!cart.length){
+    showToast('Your cart is empty');
+    return;
+  }
+
+  const modal=document.createElement('div');
+  modal.style='position:fixed;inset:0;background:#0009;z-index:9999;display:grid;place-items:center;padding:15px';
+
+  modal.innerHTML=`
+    <div style="background:white;padding:22px;border-radius:15px;width:100%;max-width:420px;color:#222">
+      <h2>Complete Your Order</h2>
+      <p>Enter your delivery details</p>
+      <form id="joyOrderForm">
+        <input id="joyName" required placeholder="Full Name" style="width:100%;padding:12px;margin:7px 0">
+        <input id="joyPhone" required placeholder="Your Phone Number" style="width:100%;padding:12px;margin:7px 0">
+        <textarea id="joyAddress" required placeholder="Delivery Address" style="width:100%;padding:12px;margin:7px 0"></textarea>
+        <button style="width:100%;padding:14px;background:#16a34a;color:white;border:0;border-radius:8px;font-weight:bold">Send Order on WhatsApp</button>
+        <button type="button" id="joyCancel" style="width:100%;padding:12px;margin-top:8px">Cancel</button>
+      </form>
+    </div>`;
+
+  document.body.appendChild(modal);
+  modal.querySelector('#joyCancel').onclick=()=>modal.remove();
+
+  modal.querySelector('#joyOrderForm').onsubmit=function(e){
+    e.preventDefault();
+
+    const name=document.getElementById('joyName').value.trim();
+    const phone=document.getElementById('joyPhone').value.trim();
+    const address=document.getElementById('joyAddress').value.trim();
+
+    const items=cart.map(x=>{
+      const p=products.find(y=>y.id===x.id);
+      return p.name+' x '+x.qty+' = '+money(p.price*x.qty);
+    }).join('\n');
+
+    const total=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0);
+
+    const message=`JOYPTY NEW ORDER
+Name: ${name}
+Customer Phone: ${phone}
+Address: ${address}
+
+Products:
+${items}
+
+Total: ${money(total)}`;
+
+    window.open('https://wa.me/8801612376207?text='+encodeURIComponent(message),'_blank');
+    modal.remove();
+  };
+}
 document.querySelectorAll('.cat').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));b.classList.add('active');category=b.dataset.category;renderProducts()}));
 document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();search=document.getElementById('searchInput').value.trim().toLowerCase();renderProducts()});
 document.getElementById('searchInput').addEventListener('input',e=>{search=e.target.value.trim().toLowerCase();renderProducts()});
