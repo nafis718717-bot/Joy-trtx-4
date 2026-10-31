@@ -254,5 +254,30 @@ async function sendJoyMessage(){
 
 renderProducts();
 </script>
+</script>
+
+<script>
+const JOY_AI_BACKEND =
+  "https://square-bonus-7358.nafis718717.workers.dev";
+
+async function askJoyAI(message) {
+  const response = await fetch(JOY_AI_BACKEND, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message })
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "JOY AI connection failed");
+  }
+
+  return data.reply;
+}
+</script>
+
 </body>
 </html>
