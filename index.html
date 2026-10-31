@@ -1,290 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#123c85">
-<title>Joy TR TX | Premium Shopping</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ff6900">
+<title>JOYPTY — Shop Smart, Live Better</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#090909;color:#f5f5f5}
-header{background:#111;padding:16px 6%;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:0 2px 12px #0001;position:sticky;top:0;z-index:5}
-.logo{font-family:'Orbitron',sans-serif;font-size:23px;letter-spacing:1.2px;font-weight:900;color:#f5f5f5}.logo span{color:#d4af37}
-nav{display:flex;gap:16px;flex-wrap:wrap}nav a{text-decoration:none;color:#222;font-weight:bold;font-size:14px}
-.hero{margin:25px 6%;padding:65px 35px;border:1px solid #333;border-radius:20px;background:linear-gradient(120deg,#050505,#242424);color:#171717}
-.hero h1{font-family:'Orbitron',sans-serif;letter-spacing:-1px;font-size:clamp(30px,5vw,46px);margin-bottom:14px}.hero p{color:#cfcfcf;margin-bottom:24px}
-.btn{display:inline-block;background:#d4af37;color:#080808;border:0;padding:13px 22px;border-radius:8px;font-weight:bold;cursor:pointer;text-decoration:none}
-.section{padding:28px 6%}.section h2{font-size:27px;margin-bottom:18px}
-.search{width:100%;padding:14px;border:1px solid #383838;background:#171717;color:#fff;border-radius:9px;margin-bottom:18px;font-size:15px}
-.categories{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}
-.categories button{border:1px solid #383838;background:#171717;color:#f5f5f5;padding:10px 16px;border-radius:22px;cursor:pointer}
-.categories button.active{background:#111111;color:#171717;border-color:#111111}
-.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-.card{background:#171717;border-radius:13px;overflow:hidden;box-shadow:0 3px 15px #ffffff0d;transition:.2s}
-.card:hover{transform:translateY(-4px)}.card img{width:100%;height:185px;object-fit:cover;background:#252525}
-.info{padding:13px}.info h3{font-size:15px;margin-bottom:9px;min-height:34px}
-.price{color:#d4af37;font-size:19px;font-weight:bold;margin-bottom:11px}
-.add{width:100%;padding:11px;border:0;background:#111111;color:#171717;border-radius:7px;cursor:pointer}
-.cart,.admin{background:#171717;padding:20px;border-radius:12px;box-shadow:0 3px 15px #00000009}
-.cart-item{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #303030}
-.cart-item button{border:0;background:#171717;color:#c33;cursor:pointer;padding:3px 7px}
-.admin p{color:#b5b5b5;font-size:14px;line-height:1.5;margin-bottom:14px}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.form-grid input,.form-grid select{width:100%;padding:12px;border:1px solid #404040;border-radius:8px;background:#171717}
-.form-grid .wide{grid-column:1/-1}
-footer{font-family:'Space Grotesk',Arial,sans-serif;background:#050505;color:#171717;text-align:center;padding:32px 15px;margin-top:35px}
-@media(max-width:850px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:600px){header{padding:14px 4%;align-items:flex-start;flex-direction:column}.hero{margin:16px 4%;padding:42px 22px}.section{padding:22px 4%}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card img{height:145px}.info{padding:10px}.form-grid{grid-template-columns:1fr}}
-
-/* Joy AI free bilingual assistant */
-#joyChatToggle{position:fixed;right:18px;bottom:18px;z-index:50;background:#d4af37;color:#080808;border:0;border-radius:999px;padding:13px 18px;font-weight:800;box-shadow:0 6px 24px #0008;cursor:pointer}
-#joyChat{position:fixed;right:16px;bottom:78px;width:min(350px,calc(100vw - 32px));height:450px;max-height:72vh;background:#101010;border:1px solid #8e742d;border-radius:16px;z-index:51;display:none;overflow:hidden;box-shadow:0 12px 40px #000b;font-family:Arial,sans-serif}
-#joyChat.open{display:flex;flex-direction:column}
-.jc-head{padding:12px 14px;background:#171717;border-bottom:1px solid #393020;display:flex;align-items:center;justify-content:space-between}
-.jc-title{font-size:13px;font-weight:800;letter-spacing:.5px;color:#e0bd55}.jc-sub{font-size:10px;color:#aaa;margin-top:3px}
-.jc-close{background:transparent;color:#ddd;border:0;font-size:21px;cursor:pointer}
-#jcMessages{padding:12px;flex:1;overflow:auto;display:flex;flex-direction:column;gap:9px}
-.jc-msg{max-width:88%;padding:9px 11px;border-radius:11px;font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
-.jc-bot{align-self:flex-start;background:#242424;color:#eee;border-bottom-left-radius:3px}.jc-user{align-self:flex-end;background:#493b1c;color:#f8e7b6;border-bottom-right-radius:3px}
-.jc-inputrow{display:flex;gap:7px;padding:10px;border-top:1px solid #393020;background:#151515}
-#jcInput{min-width:0;flex:1;background:#222;color:#fff;border:1px solid #444;border-radius:8px;padding:10px;font-size:12px;outline:none}
-#jcSend{background:#d4af37;color:#090909;border:0;border-radius:8px;padding:0 13px;font-size:12px;font-weight:bold;cursor:pointer}
-.jc-note{font-size:9px;color:#888;text-align:center;padding:0 8px 7px;background:#151515}
-
+:root{--orange:#ff6900;--orange2:#ff8a00;--ink:#171717;--muted:#737373;--line:#ececec;--bg:#f6f7f9;--white:#fff;--red:#f22}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,Helvetica,sans-serif}
+button,input{font:inherit}button{cursor:pointer}.topbar{background:var(--orange);color:white;font-size:13px;font-weight:700;padding:9px max(20px,calc((100% - 1440px)/2));display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.topbar span{white-space:nowrap}.shell{max-width:1440px;margin:auto;padding:0 22px}.mainhead{background:white;position:sticky;top:0;z-index:20;box-shadow:0 2px 12px #0000000b}.headrow{height:88px;display:flex;align-items:center;gap:30px}.logo{display:flex;align-items:center;gap:10px;min-width:265px;text-decoration:none;color:var(--ink);font-weight:950;font-size:42px;letter-spacing:-2.5px}.logo-mark{width:52px;height:54px;border-radius:13px 13px 16px 16px;background:linear-gradient(145deg,var(--orange2),var(--orange));color:white;display:grid;place-items:center;font-size:29px;position:relative;box-shadow:0 6px 14px #ff690033}.logo-mark:before{content:"";position:absolute;width:18px;height:13px;border:4px solid var(--ink);border-bottom:0;border-radius:14px 14px 0 0;top:-10px}.logo em{font-style:normal;color:var(--orange)}.search{height:48px;display:flex;flex:1;border:1px solid #e6e6e6;border-radius:13px;overflow:hidden;box-shadow:0 3px 12px #0000000a}.search input{border:0;outline:0;flex:1;padding:0 18px;min-width:0;font-size:15px}.search button{width:62px;border:0;background:var(--orange);color:white;font-size:22px}.head-actions{display:flex;gap:24px}.head-action{border:0;background:none;color:var(--ink);font-weight:700;display:grid;justify-items:center;gap:3px;font-size:12px;position:relative}.head-action b{font-size:24px;font-weight:500}.count{position:absolute;top:-3px;right:-7px;background:#f22;color:white;border-radius:50%;font-size:10px;padding:3px 6px}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;margin-top:18px}.categories{background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 15px #0000000b;height:max-content}.cat-title{background:linear-gradient(100deg,var(--orange),#ff8500);color:white;padding:17px 20px;font-weight:800;font-size:17px}.cat{width:100%;border:0;background:white;text-align:left;padding:12px 18px;display:flex;align-items:center;gap:13px;font-size:15px}.cat:hover,.cat.active{background:#fff2e8;color:#ed5e00}.cat .ico{font-size:21px;width:25px;text-align:center}
+.hero{min-height:320px;border-radius:15px;overflow:hidden;background:radial-gradient(circle at 75% 50%,#ff8b00 0,#ff6b00 30%,transparent 57%),linear-gradient(110deg,#111 0%,#191919 55%,#ff7800 100%);color:white;display:flex;align-items:center;position:relative;padding:38px 6%;isolation:isolate}.hero:after{content:"";position:absolute;right:6%;top:8%;width:38%;height:84%;background:linear-gradient(135deg,#ffffff20,#ffffff05);border:1px solid #ffffff25;border-radius:28px;transform:skew(-8deg);z-index:-1}.hero-copy{max-width:430px;z-index:1}.hero h1{font-size:clamp(42px,5vw,68px);line-height:.95;letter-spacing:-3px;margin:0 0 14px}.hero h1 span{color:#ff7900}.hero p{font-size:22px;font-weight:800;font-style:italic;margin:0 0 25px}.primary{border:0;border-radius:30px;background:linear-gradient(90deg,#ff7900,#ff9c00);color:white;font-weight:800;padding:14px 28px;font-size:17px;box-shadow:0 8px 20px #ff690044}.hero-art{position:absolute;right:4%;bottom:12%;width:48%;height:75%;display:flex;align-items:center;justify-content:center;gap:10px}.hero-product{display:grid;place-items:center;border-radius:24px;background:#ffffff18;border:1px solid #ffffff35;backdrop-filter:blur(5px);font-size:clamp(44px,6vw,82px);width:25%;height:65%;transform:rotate(-7deg)}.hero-product:nth-child(2){height:85%;width:30%;background:#ff8a00;transform:rotate(3deg);font-size:clamp(55px,7vw,95px)}.hero-product:nth-child(3){transform:rotate(8deg)}
+.benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:white;border-radius:14px;margin-top:15px;padding:15px 10px}.benefit{display:flex;justify-content:center;align-items:center;gap:10px;font-size:13px;font-weight:800}.benefit i{font-style:normal;font-size:25px}.benefit small{display:block;color:var(--muted);font-weight:500;margin-top:3px}
+.section{margin-top:27px}.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.section-head h2{font-size:26px;margin:0;letter-spacing:-.7px}.sale-clock{color:#f22;font-size:14px;font-weight:900;margin-left:12px}.seeall{border:0;background:none;color:var(--orange);font-weight:800}
+.products{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.product{background:white;border:1px solid #ededed;border-radius:13px;padding:10px;min-width:0;position:relative;box-shadow:0 3px 10px #00000006;transition:.2s}.product:hover{transform:translateY(-3px);box-shadow:0 8px 22px #00000012}.discount{position:absolute;top:10px;left:10px;background:#f22;color:white;font-weight:900;font-size:12px;padding:5px 8px;border-radius:7px;z-index:1}.product-image{height:145px;display:grid;place-items:center;background:linear-gradient(145deg,#fafafa,#f1f1f1);border-radius:9px;font-size:70px;margin-bottom:10px}.product h3{font-size:14px;line-height:1.35;margin:0 0 8px;min-height:37px;font-weight:700}.price{color:#f04424;font-weight:900;font-size:19px}.old{color:#999;text-decoration:line-through;font-size:12px;margin-left:5px}.rating{font-size:12px;margin-top:7px;color:#555}.rating b{color:#ffae00}.add{position:absolute;right:10px;bottom:10px;border:0;border-radius:8px;background:var(--orange);color:white;width:37px;height:34px;font-size:19px}
+.promo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 35px}.promo{min-height:140px;border-radius:13px;padding:20px;color:white;display:flex;align-items:center;justify-content:space-between;overflow:hidden}.promo:nth-child(1){background:linear-gradient(110deg,#7b23d6,#3d0b9b)}.promo:nth-child(2){background:linear-gradient(110deg,#075de4,#06318c)}.promo:nth-child(3){background:linear-gradient(110deg,#ffbf18,#ff7900);color:#241500}.promo strong{font-size:25px;line-height:1.15}.promo span{font-size:45px}
+footer{background:#1d1d1d;color:#ddd;padding:35px 0;margin-top:40px}.foot{display:flex;justify-content:space-between;gap:25px;flex-wrap:wrap}.foot b{color:white;font-size:22px}.foot p{color:#aaa;font-size:13px}
+.overlay{position:fixed;inset:0;background:#0008;z-index:40;display:none}.overlay.show{display:block}.drawer{position:fixed;right:0;top:0;height:100%;width:min(420px,100%);background:white;z-index:41;padding:22px;transform:translateX(105%);transition:.25s;display:flex;flex-direction:column}.drawer.show{transform:translateX(0)}.drawer-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:15px}.drawer-head h2{margin:0}.close{border:0;background:#f3f3f3;border-radius:8px;padding:8px 12px;font-size:18px}.cart-items{overflow:auto;flex:1}.cart-line{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}.cart-line .emoji{font-size:34px}.cart-line div:nth-child(2){flex:1}.cart-line small{color:var(--muted)}.qty{display:flex;align-items:center;gap:8px}.qty button{border:1px solid var(--line);background:white;border-radius:6px;padding:3px 8px}.cart-total{border-top:1px solid var(--line);padding-top:15px;font-weight:900;display:flex;justify-content:space-between}.checkout{border:0;background:var(--orange);color:white;padding:14px;border-radius:10px;font-weight:900;margin-top:13px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#222;color:white;padding:12px 18px;border-radius:10px;z-index:60;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1050px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.logo{min-width:190px;font-size:35px}.layout{grid-template-columns:230px minmax(0,1fr)}.hero-art{right:1%;width:45%}}
+@media(max-width:700px){.shell{padding:0 12px}.topbar{font-size:11px;justify-content:center}.headrow{height:auto;min-height:72px;gap:10px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}.logo{font-size:30px;min-width:0;flex:1}.logo-mark{width:40px;height:42px;font-size:22px}.head-actions{gap:10px}.head-action{font-size:10px}.head-action b{font-size:20px}.search{order:3;flex-basis:100%;height:43px}.layout{display:block;margin-top:12px}.categories{display:flex;overflow:auto;margin-bottom:12px;border-radius:10px}.cat-title{display:none}.cat{white-space:nowrap;width:auto;padding:10px 12px;font-size:12px}.cat .ico{font-size:17px;width:auto}.hero{min-height:240px;padding:25px 20px}.hero h1{font-size:43px}.hero p{font-size:16px}.hero-art{right:0;width:45%;height:65%;opacity:.9}.hero-product{font-size:38px}.hero-product:nth-child(2){font-size:48px}.primary{padding:11px 19px;font-size:14px}.benefits{grid-template-columns:repeat(2,1fr);gap:14px;padding:13px 5px}.benefit{justify-content:flex-start;font-size:11px}.benefit i{font-size:21px}.section-head h2{font-size:21px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.product-image{height:125px;font-size:58px}.product h3{font-size:13px}.price{font-size:17px}.promo-grid{grid-template-columns:1fr;gap:9px}.promo{min-height:115px}.promo strong{font-size:23px}.promo span{font-size:38px}}
+@media(min-width:701px) and (max-width:900px){.layout{grid-template-columns:200px minmax(0,1fr)}.products{grid-template-columns:repeat(3,minmax(0,1fr))}.hero-art{opacity:.65}}
 </style>
 </head>
 <body>
-<header>
-  <div class="logo">JOY <span>TR TX</span></div>
-  <nav><a href="#home">Home</a><a href="#shop">Shop</a><a href="#cart">Cart 🛒 <span id="count">0</span></a><a href="#manage">Add Products</a></nav>
-</header>
-<section class="hero" id="home">
-  <h1>Discover Your Style</h1>
-  <p>Premium Products. Amazing Prices. Exceptional Shopping.</p>
-  <a href="#shop" class="btn">SHOP NOW →</a>
-</section>
-<section class="section" id="shop">
-  <h2>Explore Products</h2>
-  <input class="search" id="search" placeholder="Search your favourite products..." oninput="renderProducts()">
-  <div class="categories">
-    <button class="active" onclick="setCategory('All',this)">All</button>
-    <button onclick="setCategory('Fashion',this)">Fashion</button>
-    <button onclick="setCategory('Electronics',this)">Electronics</button>
-    <button onclick="setCategory('Accessories',this)">Accessories</button>
-    <button onclick="setCategory('Lifestyle',this)">Lifestyle</button>
-  </div>
-  <p id="resultCount" style="color:#b5b5b5;margin:-8px 0 16px;font-size:13px"></p>
-  <div class="products" id="products"></div>
-</section>
-<section class="section" id="manage">
-  <h2>Product Manager</h2>
-  <div class="admin">
-    <p>Add as many products as you need on this device. Products you add are saved in this browser using local storage. For a shared online shop and central admin panel, a database/backend is required.</p>
-    <div class="form-grid">
-      <input id="newName" placeholder="Product name">
-      <input id="newPrice" type="number" min="1" placeholder="Price in BDT">
-      <select id="newCategory"><option>Fashion</option><option>Electronics</option><option>Accessories</option><option>Lifestyle</option></select>
-      <input id="newImage" placeholder="Image URL (https://...)">
-      <button class="btn wide" onclick="addNewProduct()">＋ Add Product</button>
-    </div>
-    <p id="adminMessage" style="margin:12px 0 0"></p>
-  </div>
-</section>
-<section class="section" id="cart">
-  <h2>Shopping Cart 🛒</h2>
-  <div class="cart">
-    <div id="cartItems">Your cart is empty.</div>
-    <h3 id="total" style="margin:20px 0">Total: ৳0</h3>
-    <button class="btn" onclick="checkout()">Order on WhatsApp</button>
-  </div>
-</section>
-<footer><h2 style="font-family:'Orbitron',sans-serif;font-size:18px;letter-spacing:1.2px">JOY TR TX</h2><p style="margin:8px 0">Premium Shopping Experience</p><p>Contact: 01612376207</p><p style="margin-top:12px">© 2026 Joy TR TX. All Rights Reserved.</p></footer>
-
-<button id="joyChatToggle" type="button" onclick="toggleJoyChat()">✦ Joy AI</button>
-<div id="joyChat" aria-label="Joy TR TX order assistant">
-  <div class="jc-head"><div><div class="jc-title">JOY TR TX · JOY AI</div><div class="jc-sub">বাংলা · English · Banglish</div></div><button class="jc-close" onclick="toggleJoyChat()" aria-label="Close">×</button></div>
-  <div id="jcMessages"><div class="jc-msg jc-bot">স্বাগতম! আমি Joy TR TX-এর AI সহকারী। বাংলা, English বা Banglish-এ প্রশ্ন করুন।\nWelcome! Ask me in Bangla, English, or Banglish.</div></div>
-  <div class="jc-inputrow"><input id="jcInput" placeholder="মেসেজ লিখুন / Type a message..." onkeydown="if(event.key==='Enter')sendJoyMessage()"><button id="jcSend" onclick="sendJoyMessage()">পাঠান</button></div>
-  <div class="jc-note">AI উত্তর পেতে Backend সেটআপ প্রয়োজন · অর্ডার WhatsApp-এ পাঠানো যাবে</div>
-</div>
-
+<div class="topbar"><span>🚚 Free Shipping on orders above ৳999</span><span>🛡️ 7 Days Easy Return</span><span>🎧 24/7 Customer Support</span><span>Track Order　|　Help　|　Contact Us</span></div>
+<header class="mainhead"><div class="shell headrow">
+<a class="logo" href="#"><span class="logo-mark">J</span><span>Joy<em>pty</em></span></a>
+<form class="search" id="searchForm"><input id="searchInput" placeholder="Search for products..." aria-label="Search products"><button aria-label="Search">⌕</button></form>
+<div class="head-actions"><button class="head-action" onclick="showToast('Account feature will be connected soon')"><b>♙</b>Account</button><button class="head-action" onclick="showToast('Wishlist coming soon')"><b>♡</b>Wishlist</button><button class="head-action" onclick="openCart()"><b>🛒<span class="count" id="cartCount">0</span></b>Cart</button></div>
+</div></header>
+<main class="shell">
+<div class="layout">
+<aside class="categories"><div class="cat-title">☰　All Categories　›</div>
+<button class="cat active" data-category="All"><span class="ico">▦</span>All Products</button>
+<button class="cat" data-category="Electronics"><span class="ico">📱</span>Electronics</button>
+<button class="cat" data-category="Fashion"><span class="ico">👕</span>Fashion & Clothing</button>
+<button class="cat" data-category="Home"><span class="ico">⌂</span>Home & Living</button>
+<button class="cat" data-category="Beauty"><span class="ico">🧴</span>Beauty & Personal Care</button>
+<button class="cat" data-category="Sports"><span class="ico">⚽</span>Sports & Outdoors</button>
+<button class="cat" data-category="Toys"><span class="ico">🎮</span>Toys & Games</button>
+<button class="cat" data-category="Health"><span class="ico">♡</span>Health & Wellness</button>
+</aside>
+<section>
+<div class="hero"><div class="hero-copy"><h1>Joy<span>pty</span></h1><p>Shop Smart • Live Better</p><button class="primary" onclick="document.getElementById('flashSale').scrollIntoView()">Shop Now　→</button></div><div class="hero-art"><div class="hero-product">🎧</div><div class="hero-product">🛍️</div><div class="hero-product">⌚</div></div></div>
+<div class="benefits"><div class="benefit"><i>🚚</i><div>Free Shipping<small>Above ৳999</small></div></div><div class="benefit"><i>🛡️</i><div>Secure Payment<small>100% Secure</small></div></div><div class="benefit"><i>📦</i><div>Easy Return<small>Within 7 Days</small></div></div><div class="benefit"><i>🎧</i><div>24/7 Support<small>Always Here</small></div></div></div>
+</section></div>
+<section class="section" id="flashSale"><div class="section-head"><h2>⚡ Flash Sale <span class="sale-clock" id="clock">01 : 23 : 45</span></h2><button class="seeall" onclick="showToast('You are viewing all available products')">See All　→</button></div><div class="products" id="products"></div></section>
+<div class="promo-grid"><div class="promo"><strong>Big Deals<br>Big Savings<br><button class="primary" onclick="showToast('Offer selected')">Shop Now →</button></strong><span>🎁</span></div><div class="promo"><strong>Up to<br><b style="font-size:38px">70% OFF</b><br><button class="primary" onclick="showToast('Offer selected')">Shop Now →</button></strong><span>📱</span></div><div class="promo"><strong>Special Offer<br>Just for You<br><button class="primary" onclick="showToast('Offer selected')">Shop Now →</button></strong><span>🎧</span></div></div>
+</main>
+<footer><div class="shell foot"><div><b>Joypty</b><p>Shop Smart • Live Better</p></div><div><b>Customer Care</b><p>Help Center　　Returns & Refunds　　Contact Us</p></div><div><b>About Joypty</b><p>About Us　　Privacy Policy　　Terms & Conditions</p></div></div></footer>
+<div class="overlay" id="overlay" onclick="closeCart()"></div><aside class="drawer" id="drawer"><div class="drawer-head"><h2>Your Cart</h2><button class="close" onclick="closeCart()">✕</button></div><div class="cart-items" id="cartItems"></div><div class="cart-total"><span>Total</span><span id="cartTotal">৳0</span></div><button class="checkout" onclick="checkout()">Continue to Checkout</button></aside><div class="toast" id="toast"></div>
 <script>
-const starterProducts = [
-{id:1,name:'Premium T-Shirt',price:650,cat:'Fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'},
-{id:2,name:'Classic Sneakers',price:1450,cat:'Fashion',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80'},
-{id:3,name:'Wireless Headphones',price:1850,cat:'Electronics',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80'},
-{id:4,name:'Smart Watch',price:2200,cat:'Electronics',img:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80'},
-{id:5,name:'Premium Backpack',price:1100,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
-{id:6,name:'Stylish Sunglasses',price:750,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
-{id:7,name:'Luxury Watch',price:1950,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
-{id:8,name:'Travel Bag',price:1250,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&w=600&q=80'},
-{id:9,name:'Casual Hoodie',price:1250,cat:'Fashion',img:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80'},
-{id:10,name:'Denim Jacket',price:1850,cat:'Fashion',img:'https://images.unsplash.com/photo-1543076447-215ad9ba6923?auto=format&fit=crop&w=600&q=80'},
-{id:11,name:'Running Shoes',price:1750,cat:'Fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'},
-{id:12,name:'Cotton Polo Shirt',price:790,cat:'Fashion',img:'https://images.unsplash.com/photo-1589310243389-96a5483213a8?auto=format&fit=crop&w=600&q=80'},
-{id:13,name:'Classic Sneakers Black',price:1590,cat:'Fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'},
-{id:14,name:'Everyday Trousers',price:990,cat:'Fashion',img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=600&q=80'},
-{id:15,name:'Summer Shirt',price:850,cat:'Fashion',img:'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=600&q=80'},
-{id:16,name:'Bluetooth Speaker',price:1350,cat:'Electronics',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80'},
-{id:17,name:'Gaming Headset',price:2450,cat:'Electronics',img:'https://images.unsplash.com/photo-1599669454699-248893623440?auto=format&fit=crop&w=600&q=80'},
-{id:18,name:'Wireless Earbuds',price:1150,cat:'Electronics',img:'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=600&q=80'},
-{id:19,name:'Digital Camera',price:12500,cat:'Electronics',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80'},
-{id:20,name:'Portable Power Bank',price:950,cat:'Electronics',img:'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=600&q=80'},
-{id:21,name:'Mechanical Keyboard',price:3200,cat:'Electronics',img:'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80'},
-{id:22,name:'Computer Mouse',price:650,cat:'Electronics',img:'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=600&q=80'},
-{id:23,name:'Tablet Stand',price:450,cat:'Electronics',img:'https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?auto=format&fit=crop&w=600&q=80'},
-{id:24,name:'Leather Wallet',price:550,cat:'Accessories',img:'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80'},
-{id:25,name:'Crossbody Bag',price:1150,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
-{id:26,name:'Baseball Cap',price:390,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
-{id:27,name:'Classic Belt',price:490,cat:'Accessories',img:'https://images.unsplash.com/photo-1624222247344-550fb8f3f4c?auto=format&fit=crop&w=600&q=80'},
-{id:28,name:'Minimal Necklace',price:650,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
-{id:29,name:'Travel Pouch',price:350,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'},
-{id:30,name:'Sports Water Bottle',price:420,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=600&q=80'},
-{id:31,name:'Desk Lamp',price:890,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
-{id:32,name:'Coffee Tumbler',price:590,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
-{id:33,name:'Room Decor',price:750,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
-{id:34,name:'Scented Candle',price:450,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80'},
-{id:35,name:'Yoga Mat',price:850,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80'},
-{id:36,name:'Fitness Bottle',price:380,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=600&q=80'},
-{id:37,name:'Travel Organizer',price:690,cat:'Lifestyle',img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'},
-{id:38,name:'Premium Cap',price:420,cat:'Fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80'},
-{id:39,name:'Smart Home Light',price:1250,cat:'Electronics',img:'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80'},
-{id:40,name:'Laptop Sleeve',price:850,cat:'Accessories',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'}
+const products=[
+{id:1,name:'Wireless Earbuds Pro',category:'Electronics',emoji:'🎧',price:1899,old:4700,off:60,rating:'4.8 (1.2k)'},
+{id:2,name:'Smart Watch T900 Ultra',category:'Electronics',emoji:'⌚',price:1999,old:3999,off:50,rating:'4.7 (800)'},
+{id:3,name:'Bluetooth Speaker',category:'Electronics',emoji:'🔊',price:2199,old:4999,off:55,rating:'4.6 (600)'},
+{id:4,name:'Casual Sneakers',category:'Fashion',emoji:'👟',price:3499,old:5800,off:40,rating:'4.7 (500)'},
+{id:5,name:'Smartphone',category:'Electronics',emoji:'📱',price:17999,old:32999,off:45,rating:'4.8 (900)'},
+{id:6,name:'Hair Dryer 2000W',category:'Beauty',emoji:'💨',price:899,old:2999,off:70,rating:'4.5 (400)'},
+{id:7,name:'Travel Backpack',category:'Fashion',emoji:'🎒',price:1299,old:2200,off:41,rating:'4.6 (320)'},
+{id:8,name:'Home Table Lamp',category:'Home',emoji:'💡',price:799,old:1400,off:43,rating:'4.4 (210)'},
+{id:9,name:'Football',category:'Sports',emoji:'⚽',price:650,old:1000,off:35,rating:'4.5 (180)'},
+{id:10,name:'Building Blocks Set',category:'Toys',emoji:'🧸',price:999,old:1600,off:38,rating:'4.7 (150)'},
+{id:11,name:'Skincare Set',category:'Beauty',emoji:'🧴',price:1199,old:1900,off:37,rating:'4.6 (260)'},
+{id:12,name:'Fitness Bottle',category:'Health',emoji:'🥤',price:399,old:650,off:39,rating:'4.5 (120)'}
 ];
-let customProducts = [];
-try { customProducts = JSON.parse(localStorage.getItem('joyTrTxProducts') || '[]'); } catch(e) {}
-let products = [...starterProducts, ...customProducts];
-let cart = [];
-let category = 'All';
-
-function setCategory(cat,btn){
-  category=cat;
-  document.querySelectorAll('.categories button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderProducts();
-}
-function renderProducts(){
-  const search=document.getElementById('search').value.toLowerCase().trim();
-  const filtered=products.filter(p=>(category==='All'||p.cat===category)&&p.name.toLowerCase().includes(search));
-  document.getElementById('resultCount').textContent=`Showing ${filtered.length} of ${products.length} products`;
-  document.getElementById('products').innerHTML=filtered.length?filtered.map(p=>`
-    <div class="card">
-      <img src="${escapeAttr(p.img)}" alt="${escapeAttr(p.name)}" loading="lazy" onerror="this.src='https://placehold.co/600x450?text=Joy+TR+TX'">
-      <div class="info"><h3>${escapeHTML(p.name)}</h3><div class="price">৳${Number(p.price).toLocaleString('en-BD')}</div>
-      <button class="add" onclick="addToCart(${Number(p.id)})">Add to Cart</button></div>
-    </div>`).join(''):'<p>No products found.</p>';
-}
-function escapeHTML(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function escapeAttr(value){return escapeHTML(value);}
-function addToCart(id){
-  const product=products.find(p=>p.id===id);if(!product)return;
-  const item=cart.find(p=>p.id===id);
-  if(item)item.qty++;else cart.push({...product,qty:1});
-  updateCart();
-}
-function removeItem(id){cart=cart.filter(p=>p.id!==id);updateCart();}
-function updateCart(){
-  document.getElementById('count').innerText=cart.reduce((s,p)=>s+p.qty,0);
-  document.getElementById('cartItems').innerHTML=cart.length?cart.map(p=>`
-    <div class="cart-item"><span>${escapeHTML(p.name)} × ${p.qty}</span>
-    <span>৳${(p.price*p.qty).toLocaleString('en-BD')} <button onclick="removeItem(${p.id})">Remove</button></span></div>`).join(''):'Your cart is empty.';
-  const total=cart.reduce((s,p)=>s+p.price*p.qty,0);
-  document.getElementById('total').innerText='Total: ৳'+total.toLocaleString('en-BD');
-}
-function addNewProduct(){
-  const name=document.getElementById('newName').value.trim();
-  const price=Number(document.getElementById('newPrice').value);
-  const cat=document.getElementById('newCategory').value;
-  const img=document.getElementById('newImage').value.trim()||'https://placehold.co/600x450?text=Joy+TR+TX';
-  const msg=document.getElementById('adminMessage');
-  if(!name||!Number.isFinite(price)||price<=0){msg.textContent='Enter a product name and a valid price.';return;}
-  if(!/^https:\/\//i.test(img)){msg.textContent='Image URL must start with https://';return;}
-  const id=Date.now()+Math.floor(Math.random()*1000);
-  const product={id,name,price,cat,img};
-  customProducts.push(product);
-  try{localStorage.setItem('joyTrTxProducts',JSON.stringify(customProducts));}
-  catch(e){msg.textContent='Could not save: browser storage may be full.';customProducts.pop();return;}
-  products=[...starterProducts,...customProducts];
-  document.getElementById('newName').value='';
-  document.getElementById('newPrice').value='';
-  document.getElementById('newImage').value='';
-  msg.textContent='Product added successfully!';
-  category='All';
-  document.querySelectorAll('.categories button').forEach(b=>b.classList.toggle('active',b.textContent==='All'));
-  renderProducts();
-}
-function checkout(){
-  if(!cart.length){alert('Your cart is empty!');return;}
-  const phone='01612376207';
-  const total=cart.reduce((s,p)=>s+p.price*p.qty,0);
-  let message='Hello Joy TR TX! I want to order:\n\n';
-  cart.forEach(p=>message+=`${p.name} x ${p.qty} = ৳${p.price*p.qty}\n`);
-  message+=`\nTotal: ৳${total}`;
-  window.open('https://wa.me/88'+phone+'?text='+encodeURIComponent(message),'_blank','noopener');
-}
-
-// JOY AI: generative assistant through a secure server-side API proxy.
-// Set this to your deployed Cloudflare Worker URL + /api/chat. Never put an API key here.
-const JOY_AI_API_URL = 'https://square-bonus-7358.nafis718717.workers.dev/api/chat';
-const joyChatHistory = [];
-let joyAiBusy = false;
-function toggleJoyChat(){document.getElementById('joyChat').classList.toggle('open');if(document.getElementById('joyChat').classList.contains('open'))document.getElementById('jcInput').focus();}
-function joyBubble(text,who='bot'){const box=document.getElementById('jcMessages');const el=document.createElement('div');el.className='jc-msg '+(who==='user'?'jc-user':'jc-bot');el.textContent=text;box.appendChild(el);box.scrollTop=box.scrollHeight;return el;}
-function joySetBusy(busy){joyAiBusy=busy;const send=document.getElementById('jcSend');send.disabled=busy;send.textContent=busy?'...':'পাঠান';send.style.opacity=busy?'.6':'1';}
-function joyGetCatalog(){return products.map(p=>({name:p.name,price:Number(p.price),category:p.cat})).slice(0,60);}
-async function sendJoyMessage(){
- const input=document.getElementById('jcInput');const q=input.value.trim();if(!q||joyAiBusy)return;
- input.value='';joyBubble(q,'user');joyChatHistory.push({role:'user',text:q});
- if(!JOY_AI_API_URL.startsWith('https://')||JOY_AI_API_URL.includes('PASTE_YOUR_CLOUDFLARE_WORKER_URL_HERE')){
-   joyBubble('JOY AI চালু করতে এখনো Backend সংযোগ করা হয়নি। ওয়েবসাইটের সেটআপ ফাইলে দেওয়া ধাপগুলো শেষ করলে AI উত্তর দিতে পারবে। আপাতত Shop থেকে পণ্য বেছে Cart থেকে WhatsApp-এ অর্ডার করতে পারবেন।');
-   return;
- }
- const wait=joyBubble('একটু অপেক্ষা করুন… / Thinking…');joySetBusy(true);
- try{
-   const response=await fetch(JOY_AI_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,history:joyChatHistory.slice(-10,-1),products:joyGetCatalog()})});
-   const data=await response.json().catch(()=>({}));
-   if(!response.ok)throw new Error(data.error||'AI সার্ভারে সমস্যা হয়েছে ('+response.status+').');
-   const answer=String(data.reply||'দুঃখিত, এই মুহূর্তে উত্তর তৈরি করা যায়নি।');
-   wait.textContent=answer;joyChatHistory.push({role:'model',text:answer});
- }catch(err){wait.textContent='JOY AI এখন উত্তর দিতে পারছে না। '+(err.message||'পরে আবার চেষ্টা করুন।')+'\n\nঅর্ডার করতে Cart থেকে WhatsApp ব্যবহার করতে পারেন।';}
- finally{joySetBusy(false);document.getElementById('jcInput').focus();}
-}
-
-renderProducts();
+let cart=[];let category='All';let search='';
+const money=n=>'৳'+n.toLocaleString('en-BD');
+function renderProducts(){const list=products.filter(p=>(category==='All'||p.category===category)&&(p.name.toLowerCase().includes(search)||p.category.toLowerCase().includes(search)));document.getElementById('products').innerHTML=list.length?list.map(p=>`<article class="product"><span class="discount">-${p.off}%</span><div class="product-image">${p.emoji}</div><h3>${p.name}</h3><div><span class="price">${money(p.price)}</span><span class="old">${money(p.old)}</span></div><div class="rating"><b>★</b> ${p.rating}</div><button class="add" aria-label="Add ${p.name} to cart" onclick="addToCart(${p.id})">🛒</button></article>`).join(''):'<p>No products found. Try another search.</p>'}
+function addToCart(id){const item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({id,qty:1});updateCart();showToast('Added to cart')}
+function updateCart(){const count=cart.reduce((s,x)=>s+x.qty,0);document.getElementById('cartCount').textContent=count;document.getElementById('cartItems').innerHTML=cart.length?cart.map(x=>{const p=products.find(y=>y.id===x.id);return `<div class="cart-line"><div class="emoji">${p.emoji}</div><div><b>${p.name}</b><br><small>${money(p.price)} each</small></div><div class="qty"><button onclick="changeQty(${p.id},-1)">−</button>${x.qty}<button onclick="changeQty(${p.id},1)">+</button></div></div>`}).join(''):'<p style="color:#777;text-align:center;margin-top:40px">Your cart is empty.</p>';document.getElementById('cartTotal').textContent=money(cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0))}
+function changeQty(id,n){const x=cart.find(x=>x.id===id);if(!x)return;x.qty+=n;if(x.qty<=0)cart=cart.filter(y=>y.id!==id);updateCart()}
+function openCart(){document.getElementById('overlay').classList.add('show');document.getElementById('drawer').classList.add('show')}
+function closeCart(){document.getElementById('overlay').classList.remove('show');document.getElementById('drawer').classList.remove('show')}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2100)}
+function checkout(){if(!cart.length){showToast('Your cart is empty');return}showToast('Checkout needs a connected order backend');}
+document.querySelectorAll('.cat').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));b.classList.add('active');category=b.dataset.category;renderProducts()}));
+document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();search=document.getElementById('searchInput').value.trim().toLowerCase();renderProducts()});
+document.getElementById('searchInput').addEventListener('input',e=>{search=e.target.value.trim().toLowerCase();renderProducts()});
+let seconds=23*3600+45*60;setInterval(()=>{seconds=(seconds+86399)%86400;const h=String(Math.floor(seconds/3600)).padStart(2,'0'),m=String(Math.floor(seconds%3600/60)).padStart(2,'0'),s=String(seconds%60).padStart(2,'0');document.getElementById('clock').textContent=`${h} : ${m} : ${s}`;seconds--},1000);
+renderProducts();updateCart();
 </script>
-  
-<script>
-const JOY_AI_BACKEND =
-  "https://square-bonus-7358.nafis718717.workers.dev";
-
-async function askJoyAI(message) {
-  try {
-    const response = await fetch(JOY_AI_BACKEND, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: message
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "AI connection failed");
-    }
-
-    return data.reply || "Sorry, please try again.";
-
-  } catch (error) {
-    console.error("JOY AI Error:", error);
-    return "দুঃখিত, JOY AI এখন উত্তর দিতে পারছে না।";
-  }
-}
-</script>
-  
 </body>
 </html>
